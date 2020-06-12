@@ -1,8 +1,9 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { alertActions } from '../_actions/alert.actions';
+
 import { history } from '../_helpers/history';
+import { alertActions } from '../_actions/alert.actions';
 import { PrivateRoute } from '../_components/PrivateRoute';
 import { HomePage } from '../HomePage/HomePage';
 import { LoginPage } from '../LoginPage/LoginPage';
@@ -24,12 +25,12 @@ class App extends React.Component {
                 <div className="container">
                     <div className="col-sm-8 col-sm-offset-2">
                         {alert.message &&
-                            <div className={`alert ${alert.type}`}>{alert.message}</div>
+                        <div className={`alert ${alert.type}`}>{alert.message}</div>
                         }
                         <Router history={history}>
                             <Switch>
                                 <PrivateRoute exact path="/" component={HomePage} />
-                                <Route path="/login" component={LoginPage}  />
+                                <Route path="/login" component={LoginPage} />
                                 <Redirect from="*" to="/" />
                             </Switch>
                         </Router>
@@ -40,13 +41,14 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapState(state) {
     const { alert } = state;
     return { alert };
 }
 
-const mapDispatchToProps = {
+const actionCreators = {
     clearAlerts: alertActions.clear
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const connectedApp = connect(mapState, actionCreators)(App);
+export { connectedApp as App };
